@@ -67,3 +67,7 @@ almacén compartido.
 - Dominio gratuito: `traefik.me` es HTTP por defecto.
 - Namecheap vacío: es correcto; RDAP seguirá funcionando como consulta auxiliar y
   devolverá `unknown` cuando no pueda confirmar el estado.
+- `EAI_AGAIN registry.npmjs.org`: es un fallo de DNS/red del builder, no del lockfile.
+  El Dockerfile prepara pnpm con hasta cinco intentos y configura reintentos para las
+  dependencias. Si los cinco fallan, verifica que el servidor de Dokploy pueda resolver
+  `registry.npmjs.org` antes de volver a desplegar.

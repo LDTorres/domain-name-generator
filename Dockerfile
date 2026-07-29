@@ -1,12 +1,29 @@
 FROM node:22-alpine AS base
+ARG PNPM_VERSION="10.14.0"
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+ENV npm_config_fetch_retries="5"
+ENV npm_config_fetch_retry_mintimeout="10000"
+ENV npm_config_fetch_retry_maxtimeout="60000"
+RUN set -eu; \
+  corepack enable; \
+  attempt=1; \
+  until corepack prepare "pnpm@${PNPM_VERSION}" --activate; do \
+    if [ "${attempt}" -ge 5 ]; then \
+      echo "No se pudo descargar pnpm después de ${attempt} intentos."; \
+      exit 1; \
+    fi; \
+    wait_seconds=$((attempt * 5)); \
+    echo "Descarga de pnpm fallida; reintentando en ${wait_seconds}s."; \
+    sleep "${wait_seconds}"; \
+    attempt=$((attempt + 1)); \
+  done
 
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=brandforge-pnpm-store,target=/pnpm/store,sharing=locked \
+  pnpm install --frozen-lockfile --fetch-retries=5
 
 FROM base AS builder
 WORKDIR /app
