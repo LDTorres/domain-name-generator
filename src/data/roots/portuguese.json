@@ -1,0 +1,22 @@
+[
+  {"value":"lar","normalized":"lar","romanized":"lar","meaning":"home","language":"portuguese","categories":["home"],"pronunciation":"lahr","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"ninho","normalized":"nino","romanized":"ninho","meaning":"nest","language":"portuguese","categories":["home","belonging"],"pronunciation":"NEEN-yoo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"casa","normalized":"casa","romanized":"casa","meaning":"house","language":"portuguese","categories":["home"],"pronunciation":"KAH-zah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lugar","normalized":"lugar","romanized":"lugar","meaning":"place","language":"portuguese","categories":["place"],"pronunciation":"loo-GAHR","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"caminho","normalized":"camino","romanized":"caminho","meaning":"path","language":"portuguese","categories":["journey"],"pronunciation":"kah-MEEN-yoo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"rota","normalized":"rota","romanized":"rota","meaning":"route","language":"portuguese","categories":["journey"],"pronunciation":"HOH-tah","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"chave","normalized":"chave","romanized":"chave","meaning":"key","language":"portuguese","categories":["access"],"pronunciation":"SHAH-vee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"porta","normalized":"porta","romanized":"porta","meaning":"door","language":"portuguese","categories":["access","home"],"pronunciation":"POR-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"bairro","normalized":"bairo","romanized":"bairro","meaning":"neighborhood","language":"portuguese","categories":["community"],"pronunciation":"BY-hoo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"achar","normalized":"acha","romanized":"achar","meaning":"find","language":"portuguese","categories":["discovery"],"pronunciation":"ah-SHAR","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"rumo","normalized":"rumo","romanized":"rumo","meaning":"direction","language":"portuguese","categories":["guidance"],"pronunciation":"HOO-moh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"claro","normalized":"claro","romanized":"claro","meaning":"clear","language":"portuguese","categories":["clarity"],"pronunciation":"KLAH-roo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"farol","normalized":"faro","romanized":"farol","meaning":"lighthouse","language":"portuguese","categories":["guidance"],"pronunciation":"fah-HOL","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"laço","normalized":"laco","romanized":"laco","meaning":"bond","language":"portuguese","categories":["belonging"],"pronunciation":"LAH-soo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vida","normalized":"vida","romanized":"vida","meaning":"life","language":"portuguese","categories":["growth"],"pronunciation":"VEE-dah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"novo","normalized":"novo","romanized":"novo","meaning":"new","language":"portuguese","categories":["innovation"],"pronunciation":"NOH-voo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"unir","normalized":"uni","romanized":"unir","meaning":"unite","language":"portuguese","categories":["community"],"pronunciation":"oo-NEER","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"estrela","normalized":"estrela","romanized":"estrela","meaning":"star","language":"portuguese","categories":["guidance"],"pronunciation":"es-TREH-lah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"brisa","normalized":"brisa","romanized":"brisa","meaning":"breeze","language":"portuguese","categories":["sound"],"pronunciation":"BREE-zah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"viver","normalized":"viva","romanized":"viver","meaning":"to live","language":"portuguese","categories":["growth","home"],"pronunciation":"vee-VEHR","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

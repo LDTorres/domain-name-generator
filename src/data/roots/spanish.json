@@ -1,0 +1,22 @@
+[
+  {"value":"hogar","normalized":"ogar","romanized":"hogar","meaning":"home","language":"spanish","categories":["home","belonging"],"pronunciation":"oh-GAR","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nido","normalized":"nido","romanized":"nido","meaning":"nest","language":"spanish","categories":["home","belonging"],"pronunciation":"NEE-doh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"casa","normalized":"casa","romanized":"casa","meaning":"house","language":"spanish","categories":["home"],"pronunciation":"KAH-sah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lugar","normalized":"lugar","romanized":"lugar","meaning":"place","language":"spanish","categories":["place"],"pronunciation":"loo-GAR","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"senda","normalized":"senda","romanized":"senda","meaning":"path","language":"spanish","categories":["journey"],"pronunciation":"SEHN-dah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"ruta","normalized":"ruta","romanized":"ruta","meaning":"route","language":"spanish","categories":["journey"],"pronunciation":"ROO-tah","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"llave","normalized":"yave","romanized":"llave","meaning":"key","language":"spanish","categories":["access","trust"],"pronunciation":"YAH-veh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"puerta","normalized":"puerta","romanized":"puerta","meaning":"door","language":"spanish","categories":["access","home"],"pronunciation":"PWEHR-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"barrio","normalized":"bario","romanized":"barrio","meaning":"neighborhood","language":"spanish","categories":["community"],"pronunciation":"BAH-ryoh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"origen","normalized":"ori","romanized":"origen","meaning":"origin","language":"spanish","categories":["origin"],"pronunciation":"oh-REE-hen","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"rumbo","normalized":"rumbo","romanized":"rumbo","meaning":"direction","language":"spanish","categories":["journey","clarity"],"pronunciation":"ROOM-boh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"hallar","normalized":"haya","romanized":"hallar","meaning":"to find","language":"spanish","categories":["discovery"],"pronunciation":"ah-YAR","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"cerca","normalized":"cerca","romanized":"cerca","meaning":"near","language":"spanish","categories":["community","place"],"pronunciation":"SEHR-kah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"claro","normalized":"claro","romanized":"claro","meaning":"clear","language":"spanish","categories":["clarity","trust"],"pronunciation":"KLAH-roh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"faro","normalized":"faro","romanized":"faro","meaning":"lighthouse","language":"spanish","categories":["guidance","trust"],"pronunciation":"FAH-roh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lazo","normalized":"lazo","romanized":"lazo","meaning":"bond","language":"spanish","categories":["belonging","community"],"pronunciation":"LAH-soh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vida","normalized":"vida","romanized":"vida","meaning":"life","language":"spanish","categories":["growth"],"pronunciation":"VEE-dah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"brío","normalized":"brio","romanized":"brio","meaning":"energy","language":"spanish","categories":["energy"],"pronunciation":"BREE-oh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"norte","normalized":"norte","romanized":"norte","meaning":"north and direction","language":"spanish","categories":["guidance"],"pronunciation":"NOR-teh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"unir","normalized":"uni","romanized":"unir","meaning":"to unite","language":"spanish","categories":["community","belonging"],"pronunciation":"oo-NEER","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

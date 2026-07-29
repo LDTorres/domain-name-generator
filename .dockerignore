@@ -1,0 +1,15 @@
+.git
+.github
+.codebase-memory
+.next
+.pnpm-store
+node_modules
+coverage
+docs
+*.log
+.env
+.env.*
+!.env.example
+prisma/*.db
+prisma/*.db-journal
+docker-compose.local.yml

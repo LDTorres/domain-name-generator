@@ -1,0 +1,11 @@
+{
+    "schema_version": 2,
+    "commit": "HEAD",
+    "indexed_at": "2026-07-29T21:40:03Z",
+    "project": "domain-name-generator",
+    "nodes": 706,
+    "edges": 1254,
+    "original_size": 2162688,
+    "compressed_size": 144611,
+    "compression_level": 3
+}

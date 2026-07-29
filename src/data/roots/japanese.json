@@ -1,0 +1,22 @@
+[
+  {"value":"家","normalized":"ie","romanized":"ie","meaning":"home","language":"japanese","categories":["home"],"pronunciation":"ee-eh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"巣","normalized":"su","romanized":"su","meaning":"nest","language":"japanese","categories":["home","belonging"],"pronunciation":"soo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"場所","normalized":"basho","romanized":"basho","meaning":"place","language":"japanese","categories":["place"],"pronunciation":"BAH-shoh","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"道","normalized":"michi","romanized":"michi","meaning":"way","language":"japanese","categories":["journey"],"pronunciation":"MEE-chee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"鍵","normalized":"kagi","romanized":"kagi","meaning":"key","language":"japanese","categories":["access"],"pronunciation":"KAH-gee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"扉","normalized":"tobira","romanized":"tobira","meaning":"door","language":"japanese","categories":["access","home"],"pronunciation":"toh-BEE-rah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"探す","normalized":"saga","romanized":"sagasu","meaning":"to search","language":"japanese","categories":["discovery"],"pronunciation":"sah-GAH-soo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"旅","normalized":"tabi","romanized":"tabi","meaning":"journey","language":"japanese","categories":["journey"],"pronunciation":"TAH-bee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"町","normalized":"machi","romanized":"machi","meaning":"town","language":"japanese","categories":["community"],"pronunciation":"MAH-chee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"絆","normalized":"kizuna","romanized":"kizuna","meaning":"bond","language":"japanese","categories":["belonging","community"],"pronunciation":"kee-ZOO-nah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"光","normalized":"hikari","romanized":"hikari","meaning":"light","language":"japanese","categories":["clarity","guidance"],"pronunciation":"hee-KAH-ree","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"信","normalized":"shin","romanized":"shin","meaning":"trust","language":"japanese","categories":["trust"],"pronunciation":"sheen","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"空","normalized":"sora","romanized":"sora","meaning":"sky","language":"japanese","categories":["aspiration"],"pronunciation":"SOH-rah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"森","normalized":"mori","romanized":"mori","meaning":"forest","language":"japanese","categories":["nature","place"],"pronunciation":"MOH-ree","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"新","normalized":"shin","romanized":"shin","meaning":"new","language":"japanese","categories":["innovation"],"pronunciation":"sheen","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"和","normalized":"wa","romanized":"wa","meaning":"harmony","language":"japanese","categories":["community","trust"],"pronunciation":"wah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"結","normalized":"yui","romanized":"yui","meaning":"connection","language":"japanese","categories":["community"],"pronunciation":"yoo-ee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"星","normalized":"hoshi","romanized":"hoshi","meaning":"star","language":"japanese","categories":["guidance"],"pronunciation":"HOH-shee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"夢","normalized":"yume","romanized":"yume","meaning":"dream","language":"japanese","categories":["aspiration"],"pronunciation":"YOO-meh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"庭","normalized":"niwa","romanized":"niwa","meaning":"garden","language":"japanese","categories":["home","growth"],"pronunciation":"NEE-wah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

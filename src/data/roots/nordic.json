@@ -1,0 +1,22 @@
+[
+  {"value":"hem","normalized":"hem","romanized":"hem","meaning":"home","language":"nordic","categories":["home"],"pronunciation":"hem","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"bo","normalized":"bo","romanized":"bo","meaning":"to live","language":"nordic","categories":["home","belonging"],"pronunciation":"boo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"sted","normalized":"sted","romanized":"sted","meaning":"place","language":"nordic","categories":["place"],"pronunciation":"sted","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vei","normalized":"vei","romanized":"vei","meaning":"way","language":"nordic","categories":["journey"],"pronunciation":"vay","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nyckel","normalized":"nyke","romanized":"nyckel","meaning":"key","language":"nordic","categories":["access"],"pronunciation":"NUE-kehl","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"dør","normalized":"dor","romanized":"dor","meaning":"door","language":"nordic","categories":["access","home"],"pronunciation":"dur","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"finne","normalized":"fine","romanized":"finne","meaning":"find","language":"nordic","categories":["discovery"],"pronunciation":"FIN-eh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"reise","normalized":"reisa","romanized":"reise","meaning":"journey","language":"nordic","categories":["journey"],"pronunciation":"RYE-seh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"by","normalized":"by","romanized":"by","meaning":"village","language":"nordic","categories":["community","place"],"pronunciation":"bee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"havn","normalized":"havn","romanized":"havn","meaning":"harbor","language":"nordic","categories":["haven","home"],"pronunciation":"hown","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"klar","normalized":"klar","romanized":"klar","meaning":"clear","language":"nordic","categories":["clarity"],"pronunciation":"klar","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"tillit","normalized":"tili","romanized":"tillit","meaning":"trust","language":"nordic","categories":["trust"],"pronunciation":"TIL-it","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lys","normalized":"lys","romanized":"lys","meaning":"light","language":"nordic","categories":["clarity","guidance"],"pronunciation":"lees","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"jord","normalized":"jord","romanized":"jord","meaning":"earth","language":"nordic","categories":["place","origin"],"pronunciation":"yoord","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"ny","normalized":"ny","romanized":"ny","meaning":"new","language":"nordic","categories":["innovation"],"pronunciation":"nue","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"liv","normalized":"liv","romanized":"liv","meaning":"life","language":"nordic","categories":["growth"],"pronunciation":"leev","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"sammen","normalized":"samen","romanized":"sammen","meaning":"together","language":"nordic","categories":["community"],"pronunciation":"SAH-men","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"stjerne","normalized":"sterna","romanized":"stjerne","meaning":"star","language":"nordic","categories":["guidance"],"pronunciation":"SHTYEHR-neh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"drøm","normalized":"drom","romanized":"drom","meaning":"dream","language":"nordic","categories":["aspiration"],"pronunciation":"drum","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"ro","normalized":"ro","romanized":"ro","meaning":"calm","language":"nordic","categories":["trust","home"],"pronunciation":"roo","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

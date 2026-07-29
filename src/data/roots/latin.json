@@ -1,0 +1,22 @@
+[
+  {"value":"locus","normalized":"loc","romanized":"locus","meaning":"place","language":"latin","categories":["place","belonging"],"pronunciation":"LOH-koos","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"terra","normalized":"terra","romanized":"terra","meaning":"earth","language":"latin","categories":["place","origin"],"pronunciation":"TEHR-rah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"domus","normalized":"dom","romanized":"domus","meaning":"home","language":"latin","categories":["home"],"pronunciation":"DOH-moos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"via","normalized":"via","romanized":"via","meaning":"way","language":"latin","categories":["journey"],"pronunciation":"VEE-ah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"porta","normalized":"porta","romanized":"porta","meaning":"door","language":"latin","categories":["access"],"pronunciation":"POR-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"clavis","normalized":"clavi","romanized":"clavis","meaning":"key","language":"latin","categories":["access","trust"],"pronunciation":"KLAH-vis","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"fidere","normalized":"fide","romanized":"fidere","meaning":"to trust","language":"latin","categories":["trust"],"pronunciation":"FEE-deh-reh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"origo","normalized":"ori","romanized":"origo","meaning":"origin","language":"latin","categories":["origin"],"pronunciation":"OH-ree-goh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"iter","normalized":"iter","romanized":"iter","meaning":"journey","language":"latin","categories":["journey"],"pronunciation":"EE-tehr","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lux","normalized":"lux","romanized":"lux","meaning":"light","language":"latin","categories":["clarity","guidance"],"pronunciation":"looks","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"novus","normalized":"nova","romanized":"novus","meaning":"new","language":"latin","categories":["innovation"],"pronunciation":"NOH-woos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vita","normalized":"vita","romanized":"vita","meaning":"life","language":"latin","categories":["growth"],"pronunciation":"WEE-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"unio","normalized":"unio","romanized":"unio","meaning":"union","language":"latin","categories":["community","belonging"],"pronunciation":"OO-nee-oh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"pax","normalized":"pax","romanized":"pax","meaning":"peace","language":"latin","categories":["trust","home"],"pronunciation":"paks","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"verus","normalized":"vera","romanized":"verus","meaning":"true","language":"latin","categories":["trust","clarity"],"pronunciation":"WEH-roos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"altus","normalized":"alta","romanized":"altus","meaning":"high","language":"latin","categories":["growth"],"pronunciation":"AHL-toos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nexus","normalized":"nex","romanized":"nexus","meaning":"connection","language":"latin","categories":["community"],"pronunciation":"NEK-soos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"aura","normalized":"aura","romanized":"aura","meaning":"breeze or presence","language":"latin","categories":["sound","identity"],"pronunciation":"OW-rah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"sidus","normalized":"sida","romanized":"sidus","meaning":"star","language":"latin","categories":["guidance"],"pronunciation":"SEE-doos","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"civis","normalized":"civi","romanized":"civis","meaning":"citizen","language":"latin","categories":["community"],"pronunciation":"KEE-wis","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

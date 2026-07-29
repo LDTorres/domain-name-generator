@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String              @id @default(cuid())
+  name        String
+  description String
+  industry    String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  keywords    Keyword[]
+  sessions    GenerationSession[]
+}
+
+model GenerationSession {
+  id             String      @id @default(cuid())
+  projectId      String
+  seed           String
+  engineVersion  String      @default("1")
+  configuration  String
+  requestedCount Int
+  generatedCount Int
+  rejectedCount  Int
+  createdAt      DateTime    @default(now())
+  project        Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  candidates     Candidate[]
+
+  @@index([projectId, createdAt])
+}
+
+model Keyword {
+  id        String   @id @default(cuid())
+  projectId String
+  value     String
+  type      String
+  weight    Int      @default(1)
+  createdAt DateTime @default(now())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, value, type])
+}
+
+model LinguisticRoot {
+  id            String   @id @default(cuid())
+  value         String
+  normalized    String
+  language      String
+  meaning       String
+  categories    String
+  pronunciation String
+  sentiment     String
+  canBePrefix   Boolean
+  canBeSuffix   Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([normalized, language])
+  @@index([language])
+}
+
+model Candidate {
+  id            String            @id @default(cuid())
+  sessionId     String
+  name          String
+  normalized    String
+  strategy      String
+  roots         String
+  configuration String
+  meaning       String
+  pronunciation String
+  syllableCount Int
+  status        String            @default("new")
+  explanation   String
+  createdAt     DateTime          @default(now())
+  session       GenerationSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  score         CandidateScore?
+  domainChecks  DomainCheck[]
+  favorite      Favorite?
+  brandRisk     BrandRisk?
+
+  @@unique([sessionId, normalized])
+  @@index([sessionId, status])
+}
+
+model CandidateScore {
+  id                       String    @id @default(cuid())
+  candidateId              String    @unique
+  total                    Int
+  memorability             Int
+  spanishPronunciation     Int
+  englishPronunciation     Int
+  spelling                 Int
+  length                   Int
+  sound                    Int
+  distinctiveness          Int
+  conceptualFit            Int
+  internationalFit         Int
+  confusionRisk            Int
+  negativeMeaningRisk      Int
+  domainAvailability       Int
+  explanation              String
+  createdAt                DateTime  @default(now())
+  candidate                Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+}
+
+model DomainCheck {
+  id             String    @id @default(cuid())
+  candidateId    String
+  domain         String
+  extension      String
+  status         String
+  price          Float?
+  renewalPrice   Float?
+  currency       String?
+  provider       String
+  secondarySignal String?
+  message        String?
+  checkedAt      DateTime  @default(now())
+  expiresAt      DateTime
+  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId, extension])
+  @@index([domain, provider, expiresAt])
+}
+
+model Favorite {
+  id          String    @id @default(cuid())
+  candidateId String    @unique
+  comment     String    @default("")
+  manualScore Int?
+  status      String    @default("new")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+}
+
+model BrandRisk {
+  id           String    @id @default(cuid())
+  candidateId  String    @unique
+  level        String
+  exactMatches String
+  similar      String
+  explanation  String
+  checkedAt    DateTime  @default(now())
+  candidate    Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+}
+
+model BlacklistedTerm {
+  id        String   @id @default(cuid())
+  term      String
+  language  String
+  severity  String
+  category  String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([term, language])
+}

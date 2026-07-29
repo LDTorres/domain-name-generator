@@ -1,0 +1,22 @@
+[
+  {"value":"foyer","normalized":"foye","romanized":"foyer","meaning":"home","language":"french","categories":["home"],"pronunciation":"fwah-YAY","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nid","normalized":"nid","romanized":"nid","meaning":"nest","language":"french","categories":["home","belonging"],"pronunciation":"nee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"maison","normalized":"maiso","romanized":"maison","meaning":"house","language":"french","categories":["home"],"pronunciation":"meh-ZOHN","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lieu","normalized":"lieu","romanized":"lieu","meaning":"place","language":"french","categories":["place"],"pronunciation":"lyuh","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"chemin","normalized":"chemi","romanized":"chemin","meaning":"path","language":"french","categories":["journey"],"pronunciation":"shuh-MAN","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"route","normalized":"routa","romanized":"route","meaning":"route","language":"french","categories":["journey"],"pronunciation":"root","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"clé","normalized":"cle","romanized":"cle","meaning":"key","language":"french","categories":["access"],"pronunciation":"klay","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"porte","normalized":"porte","romanized":"porte","meaning":"door","language":"french","categories":["access","home"],"pronunciation":"port","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"quartier","normalized":"quarti","romanized":"quartier","meaning":"neighborhood","language":"french","categories":["community"],"pronunciation":"kar-TYAY","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"trouver","normalized":"trouva","romanized":"trouver","meaning":"find","language":"french","categories":["discovery"],"pronunciation":"troo-VAY","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"arriver","normalized":"ariva","romanized":"arriver","meaning":"arrive","language":"french","categories":["journey"],"pronunciation":"ah-ree-VAY","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"clair","normalized":"clair","romanized":"clair","meaning":"clear","language":"french","categories":["clarity"],"pronunciation":"klehr","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"phare","normalized":"fare","romanized":"phare","meaning":"lighthouse","language":"french","categories":["guidance"],"pronunciation":"fahr","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"lien","normalized":"lien","romanized":"lien","meaning":"bond","language":"french","categories":["belonging"],"pronunciation":"lee-AN","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vie","normalized":"vie","romanized":"vie","meaning":"life","language":"french","categories":["growth"],"pronunciation":"vee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"neuf","normalized":"neu","romanized":"neuf","meaning":"new","language":"french","categories":["innovation"],"pronunciation":"nurf","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"unir","normalized":"uni","romanized":"unir","meaning":"unite","language":"french","categories":["community"],"pronunciation":"oo-NEER","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"étoile","normalized":"etoil","romanized":"etoile","meaning":"star","language":"french","categories":["guidance"],"pronunciation":"ay-TWAL","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"rêve","normalized":"reve","romanized":"reve","meaning":"dream","language":"french","categories":["aspiration"],"pronunciation":"rev","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"essor","normalized":"esor","romanized":"essor","meaning":"growth and rise","language":"french","categories":["growth"],"pronunciation":"eh-SOR","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

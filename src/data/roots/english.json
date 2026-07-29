@@ -1,0 +1,22 @@
+[
+  {"value":"haven","normalized":"haven","romanized":"haven","meaning":"refuge","language":"english","categories":["home","trust"],"pronunciation":"HEY-vuhn","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nest","normalized":"nest","romanized":"nest","meaning":"home and belonging","language":"english","categories":["home","belonging"],"pronunciation":"nest","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"dwell","normalized":"dwell","romanized":"dwell","meaning":"to live","language":"english","categories":["home","place"],"pronunciation":"dwel","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"home","normalized":"home","romanized":"home","meaning":"home","language":"english","categories":["home","belonging"],"pronunciation":"hohm","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"place","normalized":"place","romanized":"place","meaning":"location","language":"english","categories":["place"],"pronunciation":"plays","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"settle","normalized":"setl","romanized":"settle","meaning":"establish a home","language":"english","categories":["belonging","journey"],"pronunciation":"SEH-tuhl","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"arrive","normalized":"ariv","romanized":"arrive","meaning":"reach a destination","language":"english","categories":["journey","discovery"],"pronunciation":"uh-RYV","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"journey","normalized":"jour","romanized":"journey","meaning":"journey","language":"english","categories":["journey"],"pronunciation":"JUR-nee","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"path","normalized":"path","romanized":"path","meaning":"way forward","language":"english","categories":["journey","clarity"],"pronunciation":"path","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"door","normalized":"dor","romanized":"door","meaning":"entrance and opportunity","language":"english","categories":["access","home"],"pronunciation":"dor","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"key","normalized":"key","romanized":"key","meaning":"access","language":"english","categories":["access","trust"],"pronunciation":"kee","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"find","normalized":"find","romanized":"find","meaning":"discover","language":"english","categories":["discovery"],"pronunciation":"fynd","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"move","normalized":"mov","romanized":"move","meaning":"change place","language":"english","categories":["journey"],"pronunciation":"moov","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"origin","normalized":"ori","romanized":"origin","meaning":"beginning","language":"english","categories":["origin","belonging"],"pronunciation":"OR-ih-jin","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"neighbor","normalized":"neiva","romanized":"neighbor","meaning":"nearby community","language":"english","categories":["community"],"pronunciation":"NAY-bur","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"trust","normalized":"trust","romanized":"trust","meaning":"confidence","language":"english","categories":["trust"],"pronunciation":"trust","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"clear","normalized":"clear","romanized":"clear","meaning":"clarity","language":"english","categories":["clarity"],"pronunciation":"kleer","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"spark","normalized":"spark","romanized":"spark","meaning":"inspiration","language":"english","categories":["innovation"],"pronunciation":"spark","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"flow","normalized":"flow","romanized":"flow","meaning":"effortless movement","language":"english","categories":["movement","clarity"],"pronunciation":"floh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"bloom","normalized":"blum","romanized":"bloom","meaning":"growth","language":"english","categories":["growth"],"pronunciation":"bloom","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]

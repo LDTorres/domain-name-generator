@@ -1,0 +1,22 @@
+[
+  {"value":"casa","normalized":"casa","romanized":"casa","meaning":"home","language":"italian","categories":["home"],"pronunciation":"KAH-zah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nido","normalized":"nido","romanized":"nido","meaning":"nest","language":"italian","categories":["home","belonging"],"pronunciation":"NEE-doh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"luogo","normalized":"logo","romanized":"luogo","meaning":"place","language":"italian","categories":["place"],"pronunciation":"LWOH-goh","sentiment":"neutral","canBePrefix":true,"canBeSuffix":true},
+  {"value":"via","normalized":"via","romanized":"via","meaning":"way","language":"italian","categories":["journey"],"pronunciation":"VEE-ah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"chiave","normalized":"kiave","romanized":"chiave","meaning":"key","language":"italian","categories":["access"],"pronunciation":"KYAH-veh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"porta","normalized":"porta","romanized":"porta","meaning":"door","language":"italian","categories":["access","home"],"pronunciation":"POR-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"trova","normalized":"trova","romanized":"trova","meaning":"find","language":"italian","categories":["discovery"],"pronunciation":"TROH-vah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"viaggio","normalized":"viajo","romanized":"viaggio","meaning":"journey","language":"italian","categories":["journey"],"pronunciation":"VYAH-joh","sentiment":"positive","canBePrefix":true,"canBeSuffix":false},
+  {"value":"borgo","normalized":"borgo","romanized":"borgo","meaning":"village","language":"italian","categories":["community","place"],"pronunciation":"BOR-goh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"faro","normalized":"faro","romanized":"faro","meaning":"lighthouse","language":"italian","categories":["guidance"],"pronunciation":"FAH-roh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vero","normalized":"vero","romanized":"vero","meaning":"true","language":"italian","categories":["trust"],"pronunciation":"VEH-roh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"chiaro","normalized":"kiaro","romanized":"chiaro","meaning":"clear","language":"italian","categories":["clarity"],"pronunciation":"KYAH-roh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"nuovo","normalized":"nuvo","romanized":"nuovo","meaning":"new","language":"italian","categories":["innovation"],"pronunciation":"NWOH-voh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"vita","normalized":"vita","romanized":"vita","meaning":"life","language":"italian","categories":["growth"],"pronunciation":"VEE-tah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"unire","normalized":"uni","romanized":"unire","meaning":"unite","language":"italian","categories":["community"],"pronunciation":"oo-NEE-reh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"stella","normalized":"stela","romanized":"stella","meaning":"star","language":"italian","categories":["guidance"],"pronunciation":"STEHL-lah","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"sogno","normalized":"sonio","romanized":"sogno","meaning":"dream","language":"italian","categories":["aspiration"],"pronunciation":"SOHN-yoh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"pronto","normalized":"pronto","romanized":"pronto","meaning":"ready","language":"italian","categories":["speed"],"pronunciation":"PRON-toh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"valore","normalized":"valora","romanized":"valore","meaning":"value","language":"italian","categories":["trust"],"pronunciation":"vah-LOH-reh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true},
+  {"value":"spazio","normalized":"spazio","romanized":"spazio","meaning":"space","language":"italian","categories":["place"],"pronunciation":"SPAH-tsyoh","sentiment":"positive","canBePrefix":true,"canBeSuffix":true}
+]
