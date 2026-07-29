@@ -30,6 +30,10 @@ El contenedor prepara el archivo SQLite, aplica `prisma migrate deploy` y luego 
 Next.js. El healthcheck valida tanto el servidor como el acceso a SQLite mediante
 `GET /api/health`.
 
+El build usa la red del host únicamente mientras instala dependencias y compila. El
+contenedor final sigue conectado a la red administrada por Dokploy, por lo que Domains
+y Traefik continúan funcionando normalmente.
+
 ## Asignar el dominio
 
 En la pestaña **Domains** de la aplicación Compose:
@@ -68,6 +72,6 @@ almacén compartido.
 - Namecheap vacío: es correcto; RDAP seguirá funcionando como consulta auxiliar y
   devolverá `unknown` cuando no pueda confirmar el estado.
 - `EAI_AGAIN registry.npmjs.org`: es un fallo de DNS/red del builder, no del lockfile.
-  El Dockerfile prepara pnpm con hasta cinco intentos y configura reintentos para las
-  dependencias. Si los cinco fallan, verifica que el servidor de Dokploy pueda resolver
-  `registry.npmjs.org` antes de volver a desplegar.
+  Compose usa la red del host durante el build; además, el Dockerfile prepara pnpm con
+  hasta cinco intentos y configura reintentos para las dependencias. El runtime no usa
+  `network_mode: host`, porque debe permanecer accesible para Traefik.
