@@ -1,11 +1,11 @@
 {
     "schema_version": 2,
-    "commit": "668c3fb98ed175fe8ca65ad1bcc54942d6395c8b",
-    "indexed_at": "2026-07-30T16:28:00Z",
+    "commit": "2c427618d9fb11338b9e2974e9554e7a40508ee2",
+    "indexed_at": "2026-07-30T17:10:44Z",
     "project": "Users-ldtorres-projects-workspaces-fast-solutions-xl-domain-name-generator",
-    "nodes": 888,
-    "edges": 1756,
-    "original_size": 4653056,
-    "compressed_size": 506629,
+    "nodes": 911,
+    "edges": 1867,
+    "original_size": 4784128,
+    "compressed_size": 544881,
     "compression_level": 3
 }

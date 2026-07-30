@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { LANGUAGES } from "@/types/naming";
+import { SOUND_PROFILES } from "@/lib/naming-engine/sound-profile";
 
 const wordList = z.array(z.string().trim().min(1).max(40)).max(100);
 
@@ -11,6 +12,7 @@ export const generationConfigSchema = z
     concepts: wordList.min(1),
     keywords: wordList.min(1),
     languages: z.array(z.enum(LANGUAGES)).min(1),
+    soundProfile: z.enum(SOUND_PROFILES).default("combined"),
     count: z.coerce.number().int().min(100).max(5000).default(1000),
     minLength: z.coerce.number().int().min(3).max(12).default(5),
     maxLength: z.coerce.number().int().min(4).max(20).default(10),

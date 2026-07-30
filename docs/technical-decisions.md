@@ -12,9 +12,10 @@ costo de tests y prepara una extracción posterior.
 
 ## TD-003 — JSON versionado como fuente lingüística
 
-Raíces, prefijos, sufijos, listas problemáticas, patrones y presets se distribuyen en
-JSON. Prisma contiene una proyección administrable, no es requisito para ejecutar el
-motor.
+Raíces, fragmentos seguros, perfiles fonéticos, prefijos, sufijos, listas problemáticas,
+léxico genérico, patrones y presets se distribuyen en JSON. Cada fragmento conserva
+significado, idioma, categorías, posición y terminaciones compatibles. Prisma contiene
+una proyección administrable, no es requisito para ejecutar el motor.
 
 ## TD-004 — SQLite local y Prisma
 
@@ -62,3 +63,11 @@ invalida la optimización anterior y recalcula el perfil local.
 La instalación Compose se protege con Basic Auth en `proxy.ts`, excepto `/api/health`.
 En producción, la presencia de claves externas sin credenciales de acceso produce un
 estado de configuración inválida y deniega las solicitudes.
+
+## TD-012 — Calidad antes que volumen visible
+
+La cantidad solicitada define el mínimo de exploración, no una obligación de mostrar
+resultados mediocres. El motor genera un pool interno mayor, aplica umbrales de
+pronunciación, escritura, sonoridad, relación conceptual y riesgo negativo, y después
+diversifica los 100 visibles. La versión del motor cambia cuando estas reglas alteran
+el resultado reproducible.

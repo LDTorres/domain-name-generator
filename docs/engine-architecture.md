@@ -10,19 +10,19 @@ candidatos evaluados. Ese límite permite extraerlo después como paquete o serv
 GenerationConfig (Zod)
         │
         ▼
-context builder ── roots/prefixes/suffixes/patterns
+context builder ── roots/safe fragments/sound profiles
         │
         ▼
 strategies[] ── seeded PRNG ── raw candidates
         │
         ▼
-normalization ── hard phonetic validation
+normalization ── profile-aware phonetic validation
         │
         ▼
 negative-term + brand-risk annotations
         │
         ▼
-explainable scoring ── stable deduplication/sort
+quality floor ── explainable scoring ── diversity reranking
         │
         ▼
 GenerationResult { generatedCount, rejectedCount, candidates }
@@ -53,14 +53,18 @@ afecta el resultado.
 
 ## Filtros
 
-Los fallos estructurales (longitud, caracteres, patrones repetidos, demasiadas
-consonantes, términos expresamente prohibidos) descartan. Las coincidencias negativas,
-ambigüedad ortográfica y posibles colisiones de marca anotan riesgo y penalizan, sin
-eliminar automáticamente.
+Los fallos estructurales (longitud, caracteres, patrones repetidos, uniones de
+consonantes poco naturales, umbral de pronunciación y términos expresamente
+prohibidos) descartan. La validación usa el perfil español, inglés o combinado. Las
+coincidencias negativas, ambigüedad ortográfica, palabras genéricas y posibles
+colisiones de marca anotan riesgo y penalizan, sin afirmar disponibilidad legal.
 
 ## Puntuación
 
 Cada dimensión produce 0–100 y una explicación. La puntuación total es una media
-ponderada. Para riesgos, 100 significa menor riesgo, conservando la dirección positiva
-de todas las dimensiones. La disponibilidad de dominio comienza neutral/desconocida y
+ponderada limitada por la dimensión esencial más débil: un nombre no puede compensar
+una mala pronunciación con una longitud perfecta. Para riesgos, 100 significa menor
+riesgo, conservando la dirección positiva de todas las dimensiones. Solo pasan a la
+salida candidatos con mínimos explícitos; la selección final limita repeticiones de una
+misma raíz o estrategia. La disponibilidad de dominio comienza neutral/desconocida y
 solo se actualiza con una consulta explícita.

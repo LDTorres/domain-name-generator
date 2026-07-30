@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   countSyllables,
+  pronunciationAnalysis,
   removeRepeatedLetters,
   validatePhonetics
 } from "@/lib/naming-engine/phonetics";
@@ -40,4 +41,15 @@ describe("phonetic rules", () => {
       validatePhonetics("casora", { ...options, forbiddenSequences: ["sor"] }).valid
     ).toBe(false);
   });
+
+  it.each(["havora", "nidora", "locavia", "doreva"])(
+    "rates a pronounceable bilingual construction %s consistently",
+    (candidate) => {
+      const analysis = pronunciationAnalysis(candidate, "combined");
+      expect(analysis.spanish).toBeGreaterThanOrEqual(80);
+      expect(analysis.english).toBeGreaterThanOrEqual(80);
+      expect(analysis.spelling).toBeGreaterThanOrEqual(75);
+      expect(analysis.sound).toBeGreaterThanOrEqual(75);
+    }
+  );
 });

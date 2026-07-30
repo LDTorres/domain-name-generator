@@ -4,8 +4,12 @@ import {
   type GenerationConfig
 } from "@/lib/naming-engine/schema";
 import { LANGUAGES, type Language } from "@/types/naming";
+import {
+  SOUND_PROFILES,
+  type SoundProfile
+} from "@/lib/naming-engine/sound-profile";
 
-export const SOUND_PROFILES = ["spanish", "english", "combined"] as const;
+export { SOUND_PROFILES };
 export const BRAND_STYLES = [
   "minimal",
   "warm",
@@ -15,7 +19,7 @@ export const BRAND_STYLES = [
 ] as const;
 export const CONFIGURATION_SOURCES = ["local", "openrouter", "custom"] as const;
 
-export type SoundProfile = (typeof SOUND_PROFILES)[number];
+export type { SoundProfile };
 export type BrandStyle = (typeof BRAND_STYLES)[number];
 export type ConfigurationSource = (typeof CONFIGURATION_SOURCES)[number];
 
@@ -211,6 +215,7 @@ export function resolveBasicConfiguration(
     concepts,
     keywords,
     languages: languagesForSoundProfile(brief.soundProfile),
+    soundProfile: brief.soundProfile,
     count: 1000,
     minLength: style.minLength,
     maxLength: style.maxLength,

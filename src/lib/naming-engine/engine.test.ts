@@ -42,11 +42,35 @@ describe("naming engine", () => {
       "belonenessness",
       "officeshomethis",
       "originning",
+      "bartera",
+      "domagin",
       "2012livestream",
       "7homemorehomeif"
     ]);
     const result = generateNames(config);
     expect(result.candidates.some((candidate) => invalid.has(candidate.normalized))).toBe(false);
     expect(result.candidates.every((candidate) => /^[a-z]+$/i.test(candidate.name))).toBe(true);
+  });
+
+  it("only exposes candidates that pass the quality floor", () => {
+    const result = generateNames(config);
+    expect(
+      result.candidates.every(
+        (candidate) =>
+          candidate.score >= 72 &&
+          candidate.scores.spanishPronunciation >= 72 &&
+          candidate.scores.englishPronunciation >= 52 &&
+          candidate.scores.spelling >= 68 &&
+          candidate.scores.sound >= 68 &&
+          candidate.scores.conceptualFit >= 60
+      )
+    ).toBe(true);
+  });
+
+  it("includes data-driven combinations from compatible root endings", () => {
+    const names = new Set(generateNames(config).candidates.map((candidate) => candidate.normalized));
+    expect(names.has("havora")).toBe(true);
+    expect(names.has("nidora")).toBe(true);
+    expect(names.has("locavia")).toBe(true);
   });
 });

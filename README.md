@@ -73,9 +73,11 @@ con seed; la misma configuración, versión de motor y seed producen los mismos
 candidatos y orden. Una sesión guarda además el origen `local`, `openrouter` o
 `custom`, el modelo y la versión del prompt cuando correspondan.
 
-El motor intenta producir la cantidad solicitada (1.000 por defecto), aplica fallos
-duros, deduplica, puntúa y devuelve los 100 mejores. La disponibilidad de dominio parte
-en 50/100 (`unknown`) y no dispara red.
+El motor explora tres veces la cantidad solicitada (3.000 borradores internos con la
+configuración predeterminada), aplica fallos duros, deduplica y solo expone candidatos
+que superan mínimos de pronunciación, escritura, sonoridad y relación conceptual.
+Después diversifica por raíz y estrategia y devuelve hasta 100 resultados. La
+disponibilidad de dominio parte en 50/100 (`unknown`) y no dispara red.
 
 ## Dominios
 
@@ -148,10 +150,14 @@ revisión profesional por jurisdicción.
 
 ## Dataset
 
-La distribución inicial contiene 160 raíces (20 por fuente), 52 sufijos, 32 prefijos,
-110 términos problemáticos, 50 patrones fonéticos y 10 presets. Las raíces incluyen
-forma original, normalizada, romanizada, significado, idioma, categorías,
-pronunciación, sentimiento y uso como prefijo/sufijo.
+La distribución inicial contiene 160 raíces (20 por fuente), más de 60 fragmentos
+seguros y trazables, perfiles fonéticos para español, inglés y combinación bilingüe,
+52 sufijos, 32 prefijos, más de 100 palabras genéricas, 110 términos problemáticos, 50
+patrones fonéticos y 10 presets. Las raíces incluyen forma original, normalizada,
+romanizada, significado, idioma, categorías, pronunciación, sentimiento y uso como
+prefijo/sufijo. Los fragmentos definen posición, sonoridades compatibles y
+terminaciones recomendadas; extender ese catálogo mejora calidad sin hardcodear
+nombres finales.
 
 ## Docker
 

@@ -1,0 +1,38 @@
+{
+  "spanish": {
+    "preferredPatterns": ["CVCV", "CVCVCV", "VCVCV", "CVCCV", "CCVCV", "CVCVC", "CCVCVCV"],
+    "allowedInitialClusters": ["bl", "br", "ch", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "tr"],
+    "allowedFinals": ["a", "e", "i", "o", "u", "l", "n", "r", "s", "x"],
+    "awkwardSequences": ["ck", "dge", "ght", "kn", "ough", "ph", "shm", "sph", "th", "tch", "wh", "wr"],
+    "ambiguousSequences": ["ce", "ci", "ge", "gi", "gue", "gui", "qu", "y"],
+    "syllables": ["ba", "be", "bi", "bo", "ca", "co", "da", "de", "di", "do", "fa", "fe", "fi", "fo", "ga", "go", "la", "le", "li", "lo", "ma", "me", "mi", "mo", "na", "ne", "ni", "no", "pa", "pe", "pi", "po", "ra", "re", "ri", "ro", "sa", "se", "si", "so", "ta", "te", "ti", "to", "va", "ve", "vi", "vo"],
+    "prefixes": ["ama", "ari", "ava", "bela", "civi", "clari", "doma", "fide", "habi", "havi", "loci", "luma", "nido", "nova", "ori", "senda", "terra", "vera"],
+    "endings": ["a", "o", "ia", "io", "ara", "aro", "ena", "era", "ero", "eva", "iva", "ivo", "ora", "ova", "ura", "via"],
+    "minimumPrimaryPronunciation": 72,
+    "minimumSecondaryPronunciation": 48
+  },
+  "english": {
+    "preferredPatterns": ["CVCV", "CVCVC", "CVCVCV", "CVCCV", "CCVCV", "CCVCVC", "VCVCV", "CVVCV"],
+    "allowedInitialClusters": ["bl", "br", "ch", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "sc", "sk", "sl", "sm", "sn", "sp", "st", "sw", "tr"],
+    "allowedFinals": ["a", "e", "i", "o", "y", "l", "m", "n", "r", "s", "t", "x"],
+    "awkwardSequences": ["btg", "dth", "gth", "pht", "qz", "schr", "sphl", "tchj", "xq", "zth"],
+    "ambiguousSequences": ["c", "dge", "eigh", "ough", "ph", "qu", "tion", "sion", "x"],
+    "syllables": ["ba", "be", "bi", "bo", "bra", "ca", "co", "da", "de", "do", "dra", "fa", "fi", "flo", "ga", "go", "ha", "he", "ka", "ko", "la", "le", "li", "lo", "ma", "me", "mi", "mo", "na", "ne", "ni", "no", "pa", "pe", "pro", "ra", "re", "ri", "ro", "sa", "se", "so", "sta", "ta", "te", "to", "va", "ve", "vi", "vo"],
+    "prefixes": ["aero", "alto", "ari", "ava", "civi", "clari", "doma", "evo", "fide", "havi", "loci", "lum", "meta", "neo", "nova", "omni", "ori", "pro", "terra", "vera"],
+    "endings": ["a", "o", "ia", "io", "aro", "eo", "era", "ero", "ify", "iva", "ix", "ly", "on", "ora", "ory", "sy", "va", "via"],
+    "minimumPrimaryPronunciation": 70,
+    "minimumSecondaryPronunciation": 45
+  },
+  "combined": {
+    "preferredPatterns": ["CVCV", "CVCVCV", "VCVCV", "CVCCV", "CCVCV", "CVCVC", "CCVCVCV"],
+    "allowedInitialClusters": ["bl", "br", "ch", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "tr"],
+    "allowedFinals": ["a", "e", "i", "o", "l", "n", "r", "s", "x"],
+    "awkwardSequences": ["ckl", "dge", "dth", "ght", "jth", "ksh", "ough", "pht", "qz", "schr", "sphl", "tchj", "thl", "wrt", "xq", "zth"],
+    "ambiguousSequences": ["c", "ge", "gi", "j", "ph", "qu", "th", "w", "x", "y"],
+    "syllables": ["ba", "be", "bi", "bo", "bra", "ca", "co", "da", "de", "di", "do", "fa", "fe", "fi", "fo", "ga", "go", "ha", "he", "la", "le", "li", "lo", "ma", "me", "mi", "mo", "na", "ne", "ni", "no", "pa", "pe", "pi", "po", "ra", "re", "ri", "ro", "sa", "se", "si", "so", "ta", "te", "ti", "to", "va", "ve", "vi", "vo"],
+    "prefixes": ["ari", "ava", "bela", "civi", "clari", "doma", "fide", "havi", "loci", "luma", "nova", "ori", "senda", "terra", "vera"],
+    "endings": ["a", "o", "ia", "io", "ara", "aro", "ena", "eo", "era", "ero", "eva", "iva", "ivo", "ora", "ova", "ura", "via"],
+    "minimumPrimaryPronunciation": 66,
+    "minimumSecondaryPronunciation": 66
+  }
+}

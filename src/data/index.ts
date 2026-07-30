@@ -9,10 +9,13 @@ import nordic from "@/data/roots/nordic.json";
 import prefixes from "@/data/prefixes/prefixes.json";
 import suffixes from "@/data/suffixes/suffixes.json";
 import patterns from "@/data/phonetics/patterns.json";
+import phoneticProfiles from "@/data/phonetics/profiles.json";
+import brandFragments from "@/data/phonetics/fragments.json";
 import problematicTerms from "@/data/blacklists/problematic.json";
 import knownBrands from "@/data/brands/known.json";
+import genericWords from "@/data/brands/generic-words.json";
 import presets from "@/data/presets/presets.json";
-import type { LinguisticRoot } from "@/types/naming";
+import type { BrandFragment, LinguisticRoot } from "@/types/naming";
 
 export const linguisticRoots = [
   ...english,
@@ -25,4 +28,14 @@ export const linguisticRoots = [
   ...nordic
 ] as LinguisticRoot[];
 
-export { prefixes, suffixes, patterns, problematicTerms, knownBrands, presets };
+export {
+  prefixes,
+  suffixes,
+  patterns,
+  phoneticProfiles,
+  problematicTerms,
+  knownBrands,
+  genericWords,
+  presets
+};
+export const fragments = brandFragments as BrandFragment[];

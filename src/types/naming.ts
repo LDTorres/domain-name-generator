@@ -25,6 +25,17 @@ export interface LinguisticRoot {
   canBeSuffix: boolean;
 }
 
+export interface BrandFragment {
+  value: string;
+  root: string;
+  meaning: string;
+  language: Language;
+  categories: string[];
+  position: "start" | "end" | "both";
+  profiles: Array<"spanish" | "english" | "combined">;
+  preferredEndings?: string[];
+}
+
 export const STRATEGY_IDS = [
   "keyword-suffix",
   "prefix-keyword",
@@ -44,6 +55,8 @@ export interface CandidateOrigin {
   root: string;
   meaning: string;
   language?: Language;
+  categories?: string[];
+  preferredEndings?: string[];
 }
 
 export interface CandidateScores {

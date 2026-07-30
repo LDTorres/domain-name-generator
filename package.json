@@ -7,6 +7,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "bootstrap": "rm ./prisma/dev.db && pnpm install && pnpm db:generate && pnpm db:migrate && pnpm db:seed",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
