@@ -7,4 +7,4 @@ coverage
 .env.local
 prisma/dev.db
 prisma/dev.db-journal
-.codebase-memory/graph.db
+.codebase-memory/*
