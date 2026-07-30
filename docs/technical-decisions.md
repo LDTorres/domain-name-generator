@@ -27,11 +27,12 @@ tipo `Json` de Prisma.
 Los componentes base siguen las convenciones de shadcn/ui y viven en
 `src/components/ui`; no se incorpora una dependencia runtime opaca para ellos.
 
-## TD-006 — Integraciones explícitas
+## TD-006 — Integraciones explícitas y cadena autoritativa
 
-Namecheap solo se habilita con credenciales completas. RDAP puede confirmar
-`registered` o devolver `unknown`; DNS nunca devuelve `available`. Los errores se
-persisten como estados y mensajes visibles.
+Hostinger, Cloudflare, Porkbun y Namecheap solo se habilitan con credenciales
+completas. La cadena conserva la primera respuesta definitiva y registra todos los
+proveedores intentados. RDAP puede confirmar `registered` o devolver `unknown`; DNS
+nunca devuelve `available`. Los errores se persisten como estados y mensajes visibles.
 
 ## TD-007 — Caché persistida y rate limiting en memoria
 
@@ -41,10 +42,23 @@ un despliegue distribuido deberá sustituirlo por Redis u otro almacén comparti
 
 ## TD-008 — Sin IA en el camino crítico
 
-`AINameEvaluator` es un contrato opcional. La implementación por defecto informa
-`not_configured`; generación, filtrado y puntuación funcionan sin IA.
+`AIConfigurationOptimizer` y `AINameEvaluator` son contratos opcionales distintos.
+OpenRouter solo optimiza una configuración validada a partir del brief. Generación,
+filtrado y puntuación funcionan sin IA.
 
 ## TD-009 — Puntuación de dominio neutral hasta consultar
 
 No se infiere disponibilidad durante la generación. `domainAvailability` comienza en
 50 (`unknown`) y puede recalcularse al incorporar comprobaciones explícitas.
+
+## TD-010 — Configuración progresiva
+
+Los perfiles locales deterministas traducen sonoridad y estilo a la configuración
+completa. La edición avanzada cambia el origen a `custom`; cualquier cambio al brief
+invalida la optimización anterior y recalcula el perfil local.
+
+## TD-011 — Protección HTTP dentro de Next.js
+
+La instalación Compose se protege con Basic Auth en `proxy.ts`, excepto `/api/health`.
+En producción, la presencia de claves externas sin credenciales de acceso produce un
+estado de configuración inválida y deniega las solicitudes.

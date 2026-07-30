@@ -12,12 +12,14 @@ export interface DomainCheckResult {
   checkedAt: string;
   secondarySignal: string | null;
   message: string;
+  attemptedProviders: string[];
 }
 
 export interface DomainProvider {
   readonly id: string;
   readonly configured: boolean;
   check(domain: string): Promise<DomainCheckResult>;
+  checkMany(domains: readonly string[]): Promise<DomainCheckResult[]>;
 }
 
 export function extensionOf(domain: string): string {
@@ -37,6 +39,19 @@ export function baseResult(
     renewalPrice: null,
     currency: null,
     checkedAt: new Date().toISOString(),
-    secondarySignal: null
+    secondarySignal: null,
+    attemptedProviders: [provider.id]
+  };
+}
+
+export function unavailableResult(
+  provider: DomainProvider,
+  domain: string,
+  message: string
+): DomainCheckResult {
+  return {
+    ...baseResult(provider, domain),
+    status: "unknown",
+    message
   };
 }

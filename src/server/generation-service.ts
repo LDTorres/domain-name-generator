@@ -1,10 +1,20 @@
 import type { Prisma } from "@prisma/client";
 import { generateNames } from "@/lib/naming-engine";
 import type { GenerationConfig } from "@/lib/naming-engine/schema";
+import type { ConfigurationMetadata } from "@/lib/configuration/profiles";
 import { prisma } from "@/server/db";
 import { logger } from "@/server/logger";
 
-export async function generateAndPersist(projectId: string, config: GenerationConfig) {
+export async function generateAndPersist(
+  projectId: string,
+  config: GenerationConfig,
+  metadata: ConfigurationMetadata = {
+    source: "local",
+    model: null,
+    promptVersion: null,
+    summary: null
+  }
+) {
   const result = generateNames(config);
   const session = await prisma.generationSession.create({
     data: {
@@ -12,6 +22,10 @@ export async function generateAndPersist(projectId: string, config: GenerationCo
       seed: result.seed,
       engineVersion: result.engineVersion,
       configuration: JSON.stringify(config),
+      configurationSource: metadata.source,
+      optimizationModel: metadata.model,
+      optimizationPromptVersion: metadata.promptVersion,
+      optimizationSummary: metadata.summary,
       requestedCount: config.count,
       generatedCount: result.generatedCount,
       rejectedCount: result.rejectedCount
@@ -60,7 +74,9 @@ export async function generateAndPersist(projectId: string, config: GenerationCo
     seed: result.seed,
     generatedCount: result.generatedCount,
     persistedCount: candidates.length,
-    rejectedCount: result.rejectedCount
+    rejectedCount: result.rejectedCount,
+    configurationSource: metadata.source,
+    optimizationModel: metadata.model
   });
 
   return { ...result, sessionId: session.id, candidates };

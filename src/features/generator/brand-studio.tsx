@@ -7,6 +7,7 @@ import {
   Download,
   Globe2,
   Heart,
+  Languages,
   LoaderCircle,
   RefreshCw,
   SlidersHorizontal,
@@ -20,18 +21,20 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  BRAND_STYLES,
+  SOUND_PROFILES,
+  resolveBasicConfiguration,
+  type BasicBrief,
+  type BrandStyle,
+  type ConfigurationMetadata,
+  type PresetDefinition,
+  type SoundProfile
+} from "@/lib/configuration/profiles";
+import type { GenerationConfig } from "@/lib/naming-engine/schema";
 import { LANGUAGES, type Language } from "@/types/naming";
 
-interface Preset {
-  id: string;
-  name: string;
-  industry: string;
-  description: string;
-  concepts: string[];
-  keywords: string[];
-  languages: string[];
-  endings: string[];
-}
+type Preset = PresetDefinition;
 
 interface ScoreRecord {
   total: number;
@@ -55,10 +58,13 @@ interface DomainRecord {
   extension: string;
   status: string;
   provider: string;
+  attemptedProviders: string;
   message: string | null;
   configured?: boolean;
   price: number | null;
   renewalPrice: number | null;
+  currency: string | null;
+  secondarySignal: string | null;
   checkedAt: string;
 }
 
@@ -106,6 +112,8 @@ interface FormState {
   forbiddenWords: string;
   extensions: string[];
   seed: string;
+  soundProfile: SoundProfile;
+  brandStyle: BrandStyle;
 }
 
 const DEFAULT_FORM: FormState = {
@@ -127,7 +135,23 @@ const DEFAULT_FORM: FormState = {
   forbiddenSequences: "",
   forbiddenWords: "",
   extensions: [".com", ".io", ".co"],
-  seed: "nidoprops-v1"
+  seed: "nidoprops-v1",
+  soundProfile: "combined",
+  brandStyle: "warm"
+};
+
+const SOUND_LABELS: Record<SoundProfile, { title: string; detail: string }> = {
+  spanish: { title: "Española", detail: "Romance, clara y cercana" },
+  english: { title: "Inglesa", detail: "Global, directa y tecnológica" },
+  combined: { title: "Combinada", detail: "Equilibrio internacional" }
+};
+
+const STYLE_LABELS: Record<BrandStyle, string> = {
+  minimal: "Minimalista",
+  warm: "Cálida",
+  technology: "Tecnológica",
+  premium: "Premium",
+  bold: "Audaz"
 };
 
 const scoreLabels: Array<[keyof ScoreRecord, string]> = [
@@ -150,6 +174,61 @@ const splitList = (value: string): string[] =>
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+
+function briefFromForm(form: FormState): BasicBrief {
+  return {
+    projectName: form.projectName,
+    industry: form.industry,
+    description: form.description,
+    soundProfile: form.soundProfile,
+    brandStyle: form.brandStyle
+  };
+}
+
+function configFromForm(form: FormState): GenerationConfig {
+  return {
+    projectName: form.projectName,
+    description: form.description,
+    industry: form.industry,
+    concepts: splitList(form.concepts),
+    keywords: splitList(form.keywords),
+    languages: form.languages,
+    count: form.count,
+    minLength: form.minLength,
+    maxLength: form.maxLength,
+    maxSyllables: form.maxSyllables,
+    allowedPrefixes: splitList(form.prefixes),
+    allowedSuffixes: splitList(form.suffixes),
+    preferredEndings: splitList(form.endings),
+    forbiddenSequences: splitList(form.forbiddenSequences),
+    forbiddenWords: splitList(form.forbiddenWords),
+    domainExtensions: form.extensions as GenerationConfig["domainExtensions"],
+    seed: form.seed
+  };
+}
+
+function applyConfigToForm(current: FormState, config: GenerationConfig): FormState {
+  return {
+    ...current,
+    projectName: config.projectName,
+    description: config.description,
+    industry: config.industry,
+    concepts: config.concepts.join(", "),
+    keywords: config.keywords.join(", "),
+    languages: config.languages,
+    count: config.count,
+    minLength: config.minLength,
+    maxLength: config.maxLength,
+    maxSyllables: config.maxSyllables,
+    prefixes: config.allowedPrefixes.join(", "),
+    suffixes: config.allowedSuffixes.join(", "),
+    endings: config.preferredEndings.join(", "),
+    forbiddenSequences: config.forbiddenSequences.join(", "),
+    forbiddenWords: config.forbiddenWords.join(", "),
+    extensions: config.domainExtensions,
+    seed: config.seed
+  };
+}
 
 const selectClass =
   "h-10 rounded-xl border border-neutral-200 bg-white px-3 text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100";
@@ -177,13 +256,38 @@ function riskClass(level: string): string {
   return "bg-neutral-100 text-neutral-600";
 }
 
+function parseProviderAttempts(value: string): string[] {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    return Array.isArray(parsed)
+      ? parsed.filter((item): item is string => typeof item === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export function BrandStudio({ presets }: { presets: Preset[] }) {
-  const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [form, setForm] = useState<FormState>(() => {
+    const preset = presets.find((item) => item.industry === DEFAULT_FORM.industry);
+    return applyConfigToForm(
+      DEFAULT_FORM,
+      resolveBasicConfiguration(briefFromForm(DEFAULT_FORM), preset)
+    );
+  });
+  const [configurationView, setConfigurationView] = useState<"basic" | "advanced">("basic");
+  const [configurationMeta, setConfigurationMeta] = useState<ConfigurationMetadata>({
+    source: "local",
+    model: null,
+    promptVersion: null,
+    summary: null
+  });
   const [candidates, setCandidates] = useState<CandidateRecord[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [comparison, setComparison] = useState<CandidateRecord[]>([]);
   const [view, setView] = useState<"results" | "favorites">("results");
   const [busy, setBusy] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
   const [message, setMessage] = useState("");
   const [generationMeta, setGenerationMeta] = useState<{
     generatedCount: number;
@@ -260,18 +364,23 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
   function applyPreset(presetId: string) {
     const preset = presets.find((item) => item.id === presetId);
     if (!preset) return;
-    setForm((current) => ({
-      ...current,
-      industry: preset.industry,
-      description: preset.description,
-      concepts: preset.concepts.join(", "),
-      keywords: preset.keywords.join(", "),
-      languages: preset.languages.filter((item): item is Language =>
-        LANGUAGES.includes(item as Language)
-      ),
-      endings: preset.endings.join(", "),
-      seed: `${preset.id}-v1`
-    }));
+    setForm((current) => {
+      const next = {
+        ...current,
+        industry: preset.industry,
+        description: preset.description
+      };
+      return applyConfigToForm(
+        next,
+        resolveBasicConfiguration(briefFromForm(next), preset)
+      );
+    });
+    setConfigurationMeta({
+      source: "local",
+      model: null,
+      promptVersion: null,
+      summary: null
+    });
   }
 
   function toggleLanguage(language: Language) {
@@ -281,6 +390,79 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
         ? current.languages.filter((item) => item !== language)
         : [...current.languages, language]
     }));
+    setConfigurationMeta({
+      source: "custom",
+      model: null,
+      promptVersion: null,
+      summary: "Configuración ajustada manualmente."
+    });
+  }
+
+  function updateAdvanced(patch: Partial<FormState>) {
+    setForm((current) => ({ ...current, ...patch }));
+    setConfigurationMeta({
+      source: "custom",
+      model: null,
+      promptVersion: null,
+      summary: "Configuración ajustada manualmente."
+    });
+  }
+
+  function updateBasic(patch: Partial<FormState>) {
+    setForm((current) => {
+      const next = { ...current, ...patch };
+      try {
+        const preset = presets.find((item) => item.industry === next.industry);
+        return applyConfigToForm(
+          next,
+          resolveBasicConfiguration(briefFromForm(next), preset)
+        );
+      } catch {
+        return next;
+      }
+    });
+    setConfigurationMeta({
+      source: "local",
+      model: null,
+      promptVersion: null,
+      summary: null
+    });
+  }
+
+  async function optimizeConfiguration() {
+    setOptimizing(true);
+    setMessage("OpenRouter está optimizando la configuración…");
+    try {
+      const response = await fetch("/api/configuration/optimize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brief: briefFromForm(form) })
+      });
+      const payload = (await response.json()) as {
+        config?: GenerationConfig;
+        model?: string;
+        promptVersion?: string;
+        summary?: string;
+        error?: string;
+      };
+      if (!response.ok || !payload.config || !payload.model || !payload.promptVersion) {
+        throw new Error(payload.error ?? "OpenRouter no devolvió una configuración válida.");
+      }
+      setForm((current) => applyConfigToForm(current, payload.config!));
+      setConfigurationMeta({
+        source: "openrouter",
+        model: payload.model,
+        promptVersion: payload.promptVersion,
+        summary: payload.summary ?? null
+      });
+      setMessage(`Optimizado con IA usando ${payload.model}.`);
+    } catch (error) {
+      setMessage(
+        `${error instanceof Error ? error.message : "La optimización falló"} La configuración local no cambió.`
+      );
+    } finally {
+      setOptimizing(false);
+    }
   }
 
   async function generate() {
@@ -311,25 +493,8 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           projectId: projectPayload.project.id,
-          config: {
-            projectName: form.projectName,
-            description: form.description,
-            industry: form.industry,
-            concepts: splitList(form.concepts),
-            keywords: splitList(form.keywords),
-            languages: form.languages,
-            count: form.count,
-            minLength: form.minLength,
-            maxLength: form.maxLength,
-            maxSyllables: form.maxSyllables,
-            allowedPrefixes: splitList(form.prefixes),
-            allowedSuffixes: splitList(form.suffixes),
-            preferredEndings: splitList(form.endings),
-            forbiddenSequences: splitList(form.forbiddenSequences),
-            forbiddenWords: splitList(form.forbiddenWords),
-            domainExtensions: form.extensions,
-            seed: form.seed
-          }
+          config: configFromForm(form),
+          configurationMeta
         })
       });
       const payload = (await generationResponse.json()) as {
@@ -421,7 +586,11 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
         extensions: form.extensions
       })
     });
-    const payload = (await response.json()) as { results?: DomainRecord[]; error?: string };
+    const payload = (await response.json()) as {
+      results?: DomainRecord[];
+      providers?: Array<{ id: string; configured: boolean }>;
+      error?: string;
+    };
     if (!response.ok || !payload.results) {
       setMessage(payload.error ?? "No se pudieron consultar los dominios.");
       return;
@@ -431,7 +600,14 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
         item.id === candidate.id ? { ...item, domainChecks: payload.results ?? [] } : item
       )
     );
-    setMessage(`Consulta terminada para ${candidate.name}. Revisa estado, proveedor y fecha.`);
+    const hasCommercialProvider = payload.providers?.some(
+      (provider) => provider.id !== "rdap" && provider.configured
+    );
+    setMessage(
+      hasCommercialProvider
+        ? `Consulta terminada para ${candidate.name}. Revisa estado, proveedor y fecha.`
+        : `Consulta auxiliar terminada para ${candidate.name}. No hay un registrador comercial configurado; RDAP/DNS no pueden confirmar disponibilidad.`
+    );
   }
 
   async function generateVariations(candidate: CandidateRecord) {
@@ -554,104 +730,208 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="preset">Preset de industria</Label>
-                <select
-                  id="preset"
-                  className={`${selectClass} w-full`}
-                  defaultValue="proptech-global"
-                  onChange={(event) => applyPreset(event.target.value)}
-                >
-                  {presets.map((preset) => (
-                    <option key={preset.id} value={preset.id}>
-                      {preset.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="project">Proyecto</Label>
-                  <Input
-                    id="project"
-                    value={form.projectName}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, projectName: event.target.value }))
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="industry">Industria</Label>
-                  <Input
-                    id="industry"
-                    value={form.industry}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, industry: event.target.value }))
-                    }
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="description">Descripción</Label>
-                <Textarea
-                  id="description"
-                  value={form.description}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, description: event.target.value }))
-                  }
-                />
-              </div>
-              <div>
-                <Label htmlFor="concepts">Conceptos</Label>
-                <Textarea
-                  id="concepts"
-                  className="min-h-20"
-                  value={form.concepts}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, concepts: event.target.value }))
-                  }
-                />
-              </div>
-              <div>
-                <Label htmlFor="keywords">Keywords</Label>
-                <Input
-                  id="keywords"
-                  value={form.keywords}
-                  onChange={(event) =>
-                    setForm((current) => ({ ...current, keywords: event.target.value }))
-                  }
-                />
-              </div>
-              <div>
-                <Label>Fuentes lingüísticas</Label>
-                <div className="flex flex-wrap gap-1.5">
-                  {LANGUAGES.map((language) => {
-                    const active = form.languages.includes(language);
-                    return (
-                      <button
-                        key={language}
-                        type="button"
-                        onClick={() => toggleLanguage(language)}
-                        className={`rounded-lg border px-2.5 py-1.5 text-xs transition ${
-                          active
-                            ? "border-neutral-900 bg-neutral-900 text-white"
-                            : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-400"
-                        }`}
-                      >
-                        {active && <Check className="mr-1 inline size-3" />}
-                        {language}
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className="grid grid-cols-2 rounded-xl bg-neutral-100 p-1">
+                {(["basic", "advanced"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setConfigurationView(mode)}
+                    className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                      configurationView === mode
+                        ? "bg-white text-neutral-950 shadow-sm"
+                        : "text-neutral-500"
+                    }`}
+                  >
+                    {mode === "basic" ? "Básico" : "Avanzado"}
+                  </button>
+                ))}
               </div>
 
-              <details className="group rounded-xl border border-neutral-200 bg-neutral-50/60">
-                <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold">
-                  Reglas avanzadas
-                  <span className="float-right text-neutral-400 group-open:rotate-180">⌄</span>
-                </summary>
-                <div className="space-y-4 border-t border-neutral-200 p-4">
+              {configurationView === "basic" ? (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor="project">Proyecto</Label>
+                      <Input
+                        id="project"
+                        value={form.projectName}
+                        onChange={(event) => updateBasic({ projectName: event.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="preset">Industria</Label>
+                      <select
+                        id="preset"
+                        className={`${selectClass} w-full`}
+                        value={
+                          presets.find((preset) => preset.industry === form.industry)?.id ?? ""
+                        }
+                        onChange={(event) => applyPreset(event.target.value)}
+                      >
+                        {presets.map((preset) => (
+                          <option key={preset.id} value={preset.id}>
+                            {preset.industry}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="description">¿Qué estás construyendo?</Label>
+                    <Textarea
+                      id="description"
+                      className="min-h-28"
+                      value={form.description}
+                      onChange={(event) => updateBasic({ description: event.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label>Sonoridad esperada</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {SOUND_PROFILES.map((profile) => {
+                        const active = form.soundProfile === profile;
+                        return (
+                          <button
+                            key={profile}
+                            type="button"
+                            onClick={() => updateBasic({ soundProfile: profile })}
+                            className={`rounded-xl border p-2 text-left transition ${
+                              active
+                                ? "border-orange-400 bg-orange-50"
+                                : "border-neutral-200 bg-white hover:border-neutral-400"
+                            }`}
+                          >
+                            <Languages
+                              className={`mb-2 size-4 ${
+                                active ? "text-orange-600" : "text-neutral-400"
+                              }`}
+                            />
+                            <span className="block text-xs font-bold">
+                              {SOUND_LABELS[profile].title}
+                            </span>
+                            <span className="mt-1 hidden text-[10px] leading-4 text-neutral-500 sm:block">
+                              {SOUND_LABELS[profile].detail}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Personalidad</Label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {BRAND_STYLES.map((style) => (
+                        <button
+                          key={style}
+                          type="button"
+                          onClick={() => updateBasic({ brandStyle: style })}
+                          className={`rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition ${
+                            form.brandStyle === style
+                              ? "border-neutral-900 bg-neutral-900 text-white"
+                              : "border-neutral-200 bg-white text-neutral-600"
+                          }`}
+                        >
+                          {STYLE_LABELS[style]}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-3">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <div>
+                        <div className="text-xs font-bold text-violet-950">
+                          Afinar parámetros con IA
+                        </div>
+                        <div className="mt-0.5 text-[10px] leading-4 text-violet-700">
+                          Envía este brief a OpenRouter. Los nombres se siguen generando localmente.
+                        </div>
+                      </div>
+                      <Badge className="shrink-0 bg-white text-violet-700">
+                        {configurationMeta.source === "openrouter"
+                          ? "Optimizado"
+                          : configurationMeta.source === "custom"
+                            ? "Manual"
+                            : "Local"}
+                      </Badge>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-violet-200 bg-white"
+                      disabled={optimizing || busy || form.description.length < 10}
+                      onClick={optimizeConfiguration}
+                    >
+                      {optimizing ? (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      ) : (
+                        <Sparkles className="size-4 text-violet-600" />
+                      )}
+                      {configurationMeta.source === "openrouter"
+                        ? "Volver a optimizar"
+                        : "Optimizar con IA"}
+                    </Button>
+                    {configurationMeta.summary && (
+                      <p className="mt-2 text-[10px] leading-4 text-violet-800">
+                        {configurationMeta.summary}
+                        {configurationMeta.model && ` · ${configurationMeta.model}`}
+                      </p>
+                    )}
+                    <p className="mt-2 text-[10px] leading-4 text-violet-700">
+                      Privacidad: al pulsar el botón se enviarán proyecto, industria,
+                      descripción, sonoridad y estilo a OpenRouter.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="industry">Industria personalizada</Label>
+                    <Input
+                      id="industry"
+                      value={form.industry}
+                      onChange={(event) => updateAdvanced({ industry: event.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="concepts">Conceptos</Label>
+                    <Textarea
+                      id="concepts"
+                      className="min-h-20"
+                      value={form.concepts}
+                      onChange={(event) => updateAdvanced({ concepts: event.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="keywords">Keywords</Label>
+                    <Input
+                      id="keywords"
+                      value={form.keywords}
+                      onChange={(event) => updateAdvanced({ keywords: event.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label>Fuentes lingüísticas</Label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {LANGUAGES.map((language) => {
+                        const active = form.languages.includes(language);
+                        return (
+                          <button
+                            key={language}
+                            type="button"
+                            onClick={() => toggleLanguage(language)}
+                            className={`rounded-lg border px-2.5 py-1.5 text-xs transition ${
+                              active
+                                ? "border-neutral-900 bg-neutral-900 text-white"
+                                : "border-neutral-200 bg-white text-neutral-600"
+                            }`}
+                          >
+                            {active && <Check className="mr-1 inline size-3" />}
+                            {language}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
                       <Label>Mín.</Label>
@@ -660,10 +940,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                         min={3}
                         value={form.minLength}
                         onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            minLength: Number(event.target.value)
-                          }))
+                          updateAdvanced({ minLength: Number(event.target.value) })
                         }
                       />
                     </div>
@@ -674,10 +951,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                         max={20}
                         value={form.maxLength}
                         onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            maxLength: Number(event.target.value)
-                          }))
+                          updateAdvanced({ maxLength: Number(event.target.value) })
                         }
                       />
                     </div>
@@ -689,10 +963,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                         max={6}
                         value={form.maxSyllables}
                         onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            maxSyllables: Number(event.target.value)
-                          }))
+                          updateAdvanced({ maxSyllables: Number(event.target.value) })
                         }
                       />
                     </div>
@@ -701,9 +972,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                     <Label>Terminaciones preferidas</Label>
                     <Input
                       value={form.endings}
-                      onChange={(event) =>
-                        setForm((current) => ({ ...current, endings: event.target.value }))
-                      }
+                      onChange={(event) => updateAdvanced({ endings: event.target.value })}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -712,9 +981,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                       <Input
                         placeholder="vacío = dataset"
                         value={form.prefixes}
-                        onChange={(event) =>
-                          setForm((current) => ({ ...current, prefixes: event.target.value }))
-                        }
+                        onChange={(event) => updateAdvanced({ prefixes: event.target.value })}
                       />
                     </div>
                     <div>
@@ -722,9 +989,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                       <Input
                         placeholder="vacío = dataset"
                         value={form.suffixes}
-                        onChange={(event) =>
-                          setForm((current) => ({ ...current, suffixes: event.target.value }))
-                        }
+                        onChange={(event) => updateAdvanced({ suffixes: event.target.value })}
                       />
                     </div>
                   </div>
@@ -734,10 +999,7 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                       <Input
                         value={form.forbiddenSequences}
                         onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            forbiddenSequences: event.target.value
-                          }))
+                          updateAdvanced({ forbiddenSequences: event.target.value })
                         }
                       />
                     </div>
@@ -746,76 +1008,75 @@ export function BrandStudio({ presets }: { presets: Preset[] }) {
                       <Input
                         value={form.forbiddenWords}
                         onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            forbiddenWords: event.target.value
-                          }))
+                          updateAdvanced({ forbiddenWords: event.target.value })
                         }
                       />
                     </div>
                   </div>
-                </div>
-              </details>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="count">Cantidad</Label>
-                  <Input
-                    id="count"
-                    type="number"
-                    min={100}
-                    max={5000}
-                    value={form.count}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, count: Number(event.target.value) }))
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="seed">Seed reproducible</Label>
-                  <Input
-                    id="seed"
-                    className="font-mono text-xs"
-                    value={form.seed}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, seed: event.target.value }))
-                    }
-                  />
-                </div>
-              </div>
-              <div>
-                <Label>Dominios bajo demanda</Label>
-                <div className="flex flex-wrap gap-1.5">
-                  {[".com", ".io", ".co", ".app", ".ai", ".lat", ".com.ar"].map(
-                    (extension) => (
-                      <button
-                        type="button"
-                        key={extension}
-                        onClick={() =>
-                          setForm((current) => ({
-                            ...current,
-                            extensions: current.extensions.includes(extension)
-                              ? current.extensions.filter((item) => item !== extension)
-                              : [...current.extensions, extension]
-                          }))
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label htmlFor="count">Cantidad</Label>
+                      <Input
+                        id="count"
+                        type="number"
+                        min={100}
+                        max={5000}
+                        value={form.count}
+                        onChange={(event) =>
+                          updateAdvanced({ count: Number(event.target.value) })
                         }
-                        className={`rounded-lg border px-2.5 py-1.5 font-mono text-xs ${
-                          form.extensions.includes(extension)
-                            ? "border-orange-300 bg-orange-50 text-orange-700"
-                            : "border-neutral-200 text-neutral-500"
-                        }`}
-                      >
-                        {extension}
-                      </button>
-                    )
-                  )}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="seed">Seed reproducible</Label>
+                      <Input
+                        id="seed"
+                        className="font-mono text-xs"
+                        value={form.seed}
+                        onChange={(event) => updateAdvanced({ seed: event.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Dominios bajo demanda</Label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[".com", ".io", ".co", ".app", ".ai", ".lat", ".com.ar"].map(
+                        (extension) => (
+                          <button
+                            type="button"
+                            key={extension}
+                            onClick={() =>
+                              updateAdvanced({
+                                extensions: form.extensions.includes(extension)
+                                  ? form.extensions.filter((item) => item !== extension)
+                                  : [...form.extensions, extension]
+                              })
+                            }
+                            className={`rounded-lg border px-2.5 py-1.5 font-mono text-xs ${
+                              form.extensions.includes(extension)
+                                ? "border-orange-300 bg-orange-50 text-orange-700"
+                                : "border-neutral-200 text-neutral-500"
+                            }`}
+                          >
+                            {extension}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
               <Button
                 size="lg"
                 variant="accent"
                 className="w-full"
-                disabled={busy || form.languages.length === 0 || form.extensions.length === 0}
+                disabled={
+                  busy ||
+                  optimizing ||
+                  form.languages.length === 0 ||
+                  form.extensions.length === 0 ||
+                  form.description.length < 10
+                }
                 onClick={generate}
               >
                 {busy ? (
@@ -1123,12 +1384,36 @@ function CandidateCard({
         {candidate.domainChecks.length > 0 && (
           <div className="mb-4 space-y-1.5 rounded-xl bg-neutral-50 p-3">
             {candidate.domainChecks.map((check) => (
-              <div key={check.id} className="flex items-center justify-between gap-2 text-xs">
+              <div key={check.id} className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 text-xs">
                 <span className="font-mono font-medium">{check.domain}</span>
-                <span className={riskClass(check.status === "available" ? "low" : check.status === "registered" ? "high" : "unknown")}>
+                <span
+                  className={riskClass(
+                    check.status === "available"
+                      ? "low"
+                      : check.status === "registered"
+                        ? "high"
+                        : "unknown"
+                  )}
+                >
                   <span className="rounded-full px-2 py-0.5">{check.status}</span>
                 </span>
-                <span className="truncate text-neutral-400">{check.provider}</span>
+                <span
+                  className="truncate text-[10px] text-neutral-400"
+                  title={`Consultados: ${parseProviderAttempts(check.attemptedProviders).join(", ") || check.provider}`}
+                >
+                  {check.provider}
+                  {parseProviderAttempts(check.attemptedProviders).length > 1 &&
+                    ` · ${parseProviderAttempts(check.attemptedProviders).length} intentos`}
+                  {check.secondarySignal && ` · DNS: ${check.secondarySignal}`}
+                </span>
+                {(check.price !== null || check.renewalPrice !== null) && (
+                  <span className="text-right text-[10px] tabular-nums text-neutral-500">
+                    {check.price !== null &&
+                      `${check.currency ?? "USD"} ${check.price.toFixed(2)}`}
+                    {check.renewalPrice !== null &&
+                      ` · renueva ${check.renewalPrice.toFixed(2)}`}
+                  </span>
+                )}
               </div>
             ))}
             {candidate.domainChecks.some((check) => check.configured === false) && (

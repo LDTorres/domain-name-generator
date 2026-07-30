@@ -8,8 +8,9 @@ Agrupa el trabajo de naming. Guarda nombre, descripción, industria y timestamps
 
 ### GenerationSession
 
-Captura una ejecución reproducible: seed, configuración JSON validada, cantidad
-solicitada, cantidad generada y relación con sus candidatos.
+Captura una ejecución reproducible: seed, configuración JSON final validada, origen
+(`local`, `openrouter`, `custom`), modelo, versión de prompt, resumen de optimización,
+cantidad solicitada, cantidad generada y relación con sus candidatos.
 
 ### Keyword
 
@@ -36,8 +37,9 @@ dominio.
 
 ### DomainCheck
 
-Resultado cacheado por candidato, dominio y proveedor: estado, precios opcionales,
-moneda, fecha de consulta, vencimiento de caché, mensaje y señal secundaria.
+Resultado cacheado por candidato, dominio y proveedor final: estado, proveedores
+intentados, precios opcionales, moneda, fecha de consulta, vencimiento de caché,
+mensaje y señal DNS secundaria.
 
 ### Favorite
 

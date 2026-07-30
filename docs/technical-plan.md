@@ -16,9 +16,9 @@ demanda. Favoritos, comparación y exportación persisten en SQLite.
    puntuación explicable y selección estable.
 4. **Persistencia**: proyectos, sesiones, candidatos, puntuaciones, dominios, favoritos,
    riesgo de marca y términos bloqueados.
-5. **Producto**: generador, resultados, filtros, favoritos y estados.
-6. **Dominios**: contrato común, RDAP, DNS secundario, Namecheap opcional, caché y rate
-   limiting.
+5. **Producto**: configuración básica/avanzada, resultados, filtros, favoritos y estados.
+6. **Dominios**: cadena Hostinger, Cloudflare, Porkbun, Namecheap y RDAP; DNS
+   secundario, batch, caché y rate limiting.
 7. **Decisión**: comparación de 2 a 5 nombres y exportación CSV, JSON y Markdown.
 8. **Cierre**: tests, seed, migración, Docker, documentación y validación de producción.
 
@@ -26,24 +26,28 @@ demanda. Favoritos, comparación y exportación persisten en SQLite.
 
 ### Generación
 
-1. La UI envía una configuración a `POST /api/generate`.
-2. Zod aplica defaults y valida límites.
-3. El servicio crea o reutiliza el proyecto y registra una sesión.
-4. El motor expande raíces relevantes, ejecuta estrategias con el PRNG y produce un
+1. Un perfil local convierte el brief básico en una configuración completa, o el
+   usuario la edita en Avanzado.
+2. OpenRouter puede optimizarla de forma explícita y opcional.
+3. La UI envía la configuración final a `POST /api/generate`.
+4. Zod aplica defaults y valida límites.
+5. El servicio crea o reutiliza el proyecto y registra una sesión.
+6. El motor expande raíces relevantes, ejecuta estrategias con el PRNG y produce un
    conjunto sobredimensionado.
-5. El pipeline normaliza, descarta fallos duros, anota riesgos blandos, puntúa y
+7. El pipeline normaliza, descarta fallos duros, anota riesgos blandos, puntúa y
    deduplica.
-6. Se guardan los mejores candidatos y se devuelven los 100 primeros.
+8. Se guardan los mejores candidatos y se devuelven los 100 primeros.
 
 ### Dominio
 
 1. El usuario solicita explícitamente una comprobación.
 2. El rate limiter limita por cliente y ventana.
 3. La caché devuelve resultados recientes.
-4. El proveedor configurado consulta el estado. RDAP puede confirmar registro; DNS
-   aporta una señal secundaria, pero nunca demuestra disponibilidad.
-5. Sin credenciales o con una respuesta ambigua, el estado es `unknown` o el proveedor
-   se presenta como `not_configured`.
+4. La cadena consulta proveedores configurados en batch y se detiene en la primera
+   respuesta definitiva.
+5. RDAP puede confirmar registro; DNS aporta una señal secundaria, pero nunca demuestra
+   disponibilidad.
+6. Sin credenciales o con una respuesta ambigua, el estado es `unknown`.
 
 ### Favoritos y comparación
 

@@ -19,17 +19,21 @@ model Project {
 }
 
 model GenerationSession {
-  id             String      @id @default(cuid())
-  projectId      String
-  seed           String
-  engineVersion  String      @default("1")
-  configuration  String
-  requestedCount Int
-  generatedCount Int
-  rejectedCount  Int
-  createdAt      DateTime    @default(now())
-  project        Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  candidates     Candidate[]
+  id                        String      @id @default(cuid())
+  projectId                 String
+  seed                      String
+  engineVersion             String      @default("1")
+  configuration             String
+  configurationSource       String      @default("local")
+  optimizationModel         String?
+  optimizationPromptVersion String?
+  optimizationSummary       String?
+  requestedCount            Int
+  generatedCount            Int
+  rejectedCount             Int
+  createdAt                 DateTime    @default(now())
+  project                   Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  candidates                Candidate[]
 
   @@index([projectId, createdAt])
 }
@@ -89,41 +93,42 @@ model Candidate {
 }
 
 model CandidateScore {
-  id                       String    @id @default(cuid())
-  candidateId              String    @unique
-  total                    Int
-  memorability             Int
-  spanishPronunciation     Int
-  englishPronunciation     Int
-  spelling                 Int
-  length                   Int
-  sound                    Int
-  distinctiveness          Int
-  conceptualFit            Int
-  internationalFit         Int
-  confusionRisk            Int
-  negativeMeaningRisk      Int
-  domainAvailability       Int
-  explanation              String
-  createdAt                DateTime  @default(now())
-  candidate                Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  id                   String    @id @default(cuid())
+  candidateId          String    @unique
+  total                Int
+  memorability         Int
+  spanishPronunciation Int
+  englishPronunciation Int
+  spelling             Int
+  length               Int
+  sound                Int
+  distinctiveness      Int
+  conceptualFit        Int
+  internationalFit     Int
+  confusionRisk        Int
+  negativeMeaningRisk  Int
+  domainAvailability   Int
+  explanation          String
+  createdAt            DateTime  @default(now())
+  candidate            Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
 }
 
 model DomainCheck {
-  id             String    @id @default(cuid())
-  candidateId    String
-  domain         String
-  extension      String
-  status         String
-  price          Float?
-  renewalPrice   Float?
-  currency       String?
-  provider       String
-  secondarySignal String?
-  message        String?
-  checkedAt      DateTime  @default(now())
-  expiresAt      DateTime
-  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  id                 String    @id @default(cuid())
+  candidateId        String
+  domain             String
+  extension          String
+  status             String
+  price              Float?
+  renewalPrice       Float?
+  currency           String?
+  provider           String
+  attemptedProviders String    @default("[]")
+  secondarySignal    String?
+  message            String?
+  checkedAt          DateTime  @default(now())
+  expiresAt          DateTime
+  candidate          Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
 
   @@index([candidateId, extension])
   @@index([domain, provider, expiresAt])

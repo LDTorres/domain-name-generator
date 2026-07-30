@@ -1,21 +1,20 @@
 import { NextResponse } from "next/server";
-import { configuredDomainProvider } from "@/lib/domain-providers";
+import { domainProviderStatuses } from "@/lib/domain-providers";
 import { prisma } from "@/server/db";
 import { logger } from "@/server/logger";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const provider = configuredDomainProvider();
-
   try {
     await prisma.$queryRaw`SELECT 1`;
     return NextResponse.json({
       status: "healthy",
       database: "ready",
-      domainProvider: {
-        id: provider.id,
-        configured: provider.configured
+      domainProviders: domainProviderStatuses(),
+      aiOptimizer: {
+        id: "openrouter",
+        configured: Boolean(process.env.OPENROUTER_API_KEY)
       },
       checkedAt: new Date().toISOString()
     });

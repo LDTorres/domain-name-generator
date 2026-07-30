@@ -5,7 +5,9 @@
 | Falsos positivos lingüísticos | Un nombre puede sonar mal en una región | Riesgo configurable, explicación y puntuación separada | Revisión por hablantes y corpus regionales |
 | Disponibilidad de dominio ambigua | RDAP/DNS no garantizan compra | Estados `unknown`; DNS solo como señal | Integrar registrador con precio y compra |
 | Rate limiting por proceso | Varias instancias multiplican el límite | Documentar alcance y consultar bajo demanda | Redis/token bucket distribuido |
-| Cambios de APIs RDAP/Namecheap | Fallos externos | Timeouts, errores visibles, proveedor desacoplado | Observabilidad y circuit breaker |
+| Cambios de APIs de registradores | Fallos externos | Zod, timeouts, errores visibles y proveedores desacoplados | Observabilidad y circuit breaker |
+| Disponibilidad de modelos gratuitos | Optimización intermitente | Perfil local intacto, errores explícitos y sin fallback pago | Selección administrable de modelos gratuitos |
+| Exposición de claves en Compose | Consumo o abuso de APIs | Secretos server-only y Basic Auth fail-closed en producción | Gestor de secretos y SSO externo |
 | Riesgo legal incompleto | Posible colisión de marca | Advertencia explícita; similitud local no afirma disponibilidad | Proveedor oficial y revisión profesional |
 | Dataset con sesgos o errores | Connotaciones imprecisas | Metadatos y archivos por idioma revisables | Curación especializada y versionado |
 | Explosión combinatoria | Latencia al pedir grandes lotes | Presupuesto de intentos, sets y tope validado | Workers/colas para lotes mayores |

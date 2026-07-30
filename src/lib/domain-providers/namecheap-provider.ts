@@ -22,13 +22,18 @@ export class NamecheapProvider implements DomainProvider {
   }
 
   async check(domain: string): Promise<DomainCheckResult> {
-    const base = baseResult(this, domain);
+    return (await this.checkMany([domain]))[0]!;
+  }
+
+  async checkMany(domains: readonly string[]): Promise<DomainCheckResult[]> {
+    if (domains.length === 0) return [];
+    const bases = domains.map((domain) => baseResult(this, domain));
     if (!this.configured) {
-      return {
-        ...base,
-        status: "unknown",
+      return bases.map((item) => ({
+        ...item,
+        status: "unknown" as const,
         message: "Namecheap no configurado: faltan credenciales en las variables de entorno."
-      };
+      }));
     }
 
     const credentials = this.credentials as NamecheapCredentials;
@@ -38,7 +43,7 @@ export class NamecheapProvider implements DomainProvider {
       UserName: credentials.username,
       ClientIp: credentials.clientIp,
       Command: "namecheap.domains.check",
-      DomainList: domain
+      DomainList: domains.join(",")
     });
 
     try {
@@ -48,34 +53,45 @@ export class NamecheapProvider implements DomainProvider {
       });
       const xml = await response.text();
       if (!response.ok || /Status="ERROR"/i.test(xml)) {
-        return {
-          ...base,
-          status: "error",
+        return bases.map((item) => ({
+          ...item,
+          status: "error" as const,
           message: "Namecheap rechazó la consulta. Revisa credenciales, IP autorizada y límites."
-        };
+        }));
       }
-      const available = /Available="true"/i.test(xml);
-      const premium = /IsPremiumName="true"/i.test(xml);
-      const price = xml.match(/PremiumRegistrationPrice="([^"]+)"/i)?.[1];
-      const renewalPrice = xml.match(/PremiumRenewalPrice="([^"]+)"/i)?.[1];
-      return {
-        ...base,
-        status: premium ? "premium" : available ? "available" : "registered",
-        price: price ? Number(price) : null,
-        renewalPrice: renewalPrice ? Number(renewalPrice) : null,
-        currency: price || renewalPrice ? "USD" : null,
-        message: premium
-          ? "Namecheap informa que el dominio es premium."
-          : available
-            ? "Namecheap informa que el dominio está disponible."
-            : "Namecheap informa que el dominio está registrado."
-      };
-    } catch (error) {
-      return {
-        ...base,
-        status: "error",
-        message: error instanceof Error ? error.message : "Error desconocido consultando Namecheap."
-      };
+      return bases.map((item) => {
+        const escaped = item.domain.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const tag = xml.match(new RegExp(`<DomainCheckResult[^>]*Domain="${escaped}"[^>]*>`, "i"))?.[0];
+        if (!tag) {
+          return {
+            ...item,
+            status: "unknown" as const,
+            message: "Namecheap no devolvió un resultado para este dominio."
+          };
+        }
+        const available = /Available="true"/i.test(tag);
+        const premium = /IsPremiumName="true"/i.test(tag);
+        const price = tag.match(/PremiumRegistrationPrice="([^"]+)"/i)?.[1];
+        const renewalPrice = tag.match(/PremiumRenewalPrice="([^"]+)"/i)?.[1];
+        return {
+          ...item,
+          status: premium ? "premium" as const : available ? "available" as const : "registered" as const,
+          price: price ? Number(price) : null,
+          renewalPrice: renewalPrice ? Number(renewalPrice) : null,
+          currency: price || renewalPrice ? "USD" : null,
+          message: premium
+            ? "Namecheap informa que el dominio es premium."
+            : available
+              ? "Namecheap informa que el dominio está disponible."
+              : "Namecheap informa que el dominio está registrado."
+        };
+      });
+    } catch {
+      return bases.map((item) => ({
+        ...item,
+        status: "error" as const,
+        message: "No se pudo contactar Namecheap."
+      }));
     }
   }
 }

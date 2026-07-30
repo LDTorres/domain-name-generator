@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { checkDomain, configuredDomainProvider } from "@/lib/domain-providers";
+import {
+  checkDomains,
+  configuredDomainProviders,
+  domainProviderStatuses
+} from "@/lib/domain-providers";
+import { isReusableDomainCache } from "@/lib/domain-providers/cache";
 import { domainCheckInputSchema } from "@/lib/naming-engine/schema";
 import { prisma } from "@/server/db";
 import { logger } from "@/server/logger";
@@ -26,47 +31,83 @@ export async function POST(request: Request) {
   });
   if (!candidate) return NextResponse.json({ error: "Candidato no encontrado." }, { status: 404 });
 
-  const provider = configuredDomainProvider();
+  const providers = configuredDomainProviders();
+  const providerIds = providers.map((provider) => provider.id);
+  const providerOrder = new Map(providers.map((provider, index) => [provider.id, index]));
   const now = new Date();
   const ttlSeconds = Number(process.env.DOMAIN_CACHE_TTL_SECONDS ?? 86400);
-  const results = [];
+  const domains = parsed.data.extensions.map(
+    (extension) => `${parsed.data.name.toLowerCase()}${extension}`
+  );
+  const extensionByDomain = new Map(
+    parsed.data.extensions.map((extension) => [
+      `${parsed.data.name.toLowerCase()}${extension}`,
+      extension
+    ])
+  );
+  const cachedRows = await prisma.domainCheck.findMany({
+    where: {
+      domain: { in: domains },
+      expiresAt: { gt: now }
+    },
+    orderBy: { checkedAt: "desc" }
+  });
+  const cachedByDomain = new Map<string, (typeof cachedRows)[number]>();
+  for (const domain of domains) {
+    const matches = cachedRows
+      .filter((row) => row.domain === domain)
+      .filter((row) => isReusableDomainCache(row, providerIds))
+      .sort(
+        (left, right) =>
+          (providerOrder.get(left.provider) ?? 999) -
+          (providerOrder.get(right.provider) ?? 999)
+      );
+    if (matches[0]) cachedByDomain.set(domain, matches[0]);
+  }
+  const missingDomains = domains.filter((domain) => !cachedByDomain.has(domain));
+  const checked = await checkDomains(missingDomains);
+  const savedByDomain = new Map<string, (typeof cachedRows)[number]>();
 
-  for (const extension of parsed.data.extensions) {
-    const domain = `${parsed.data.name.toLowerCase()}${extension}`;
-    const cached = await prisma.domainCheck.findFirst({
-      where: { domain, provider: provider.id, expiresAt: { gt: now } },
-      orderBy: { checkedAt: "desc" }
-    });
-    if (cached) {
-      results.push({ ...cached, cached: true, configured: provider.configured });
-      continue;
-    }
-
-    const result = await checkDomain(domain);
+  for (const result of checked) {
     const expiresAt = new Date(Date.now() + ttlSeconds * 1000);
+    const extension = extensionByDomain.get(result.domain) ?? "";
     const saved = await prisma.domainCheck.create({
       data: {
         candidateId: parsed.data.candidateId,
-        domain,
+        domain: result.domain,
         extension,
         status: result.status,
         price: result.price,
         renewalPrice: result.renewalPrice,
         currency: result.currency,
         provider: result.provider,
+        attemptedProviders: JSON.stringify(result.attemptedProviders),
         secondarySignal: result.secondarySignal,
         message: result.message,
         checkedAt: new Date(result.checkedAt),
         expiresAt
       }
     });
-    results.push({ ...saved, cached: false, configured: result.configured });
+    savedByDomain.set(result.domain, saved);
   }
+
+  const results = domains.flatMap((domain) => {
+    const cached = cachedByDomain.get(domain);
+    if (cached) {
+      return [{ ...cached, cached: true, configured: true }];
+    }
+    const saved = savedByDomain.get(domain);
+    return saved ? [{ ...saved, cached: false, configured: true }] : [];
+  });
 
   logger.info("domains.checked", {
     candidateId: parsed.data.candidateId,
-    provider: provider.id,
+    providers: providers.map((provider) => provider.id),
     count: results.length
   });
-  return NextResponse.json({ results, rateLimitRemaining: rate.remaining });
+  return NextResponse.json({
+    results,
+    providers: domainProviderStatuses(),
+    rateLimitRemaining: rate.remaining
+  });
 }

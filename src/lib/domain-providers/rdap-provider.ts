@@ -44,4 +44,8 @@ export class RDAPProvider implements DomainProvider {
       };
     }
   }
+
+  async checkMany(domains: readonly string[]): Promise<DomainCheckResult[]> {
+    return Promise.all(domains.map((domain) => this.check(domain)));
+  }
 }
